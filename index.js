@@ -1,15 +1,14 @@
-var es6 = true;
-try {
-    eval("(function *(){})");
-    eval("var o = {['com'+'puted']: 'property'};");
-} catch (err) {
-    es6 = false;
-}
+"use strict";
 
-var es = es6 ? "es6" : "es5";
-
-if (!es6) {
-    require("traceur/bin/traceur-runtime");
-}
-
-module.exports = require("./lib/" + es);
+module.exports = {
+    BuildSystem: require("./lib/buildSystem"),
+    CMLog: require("./lib/cmLog"),
+    environment: require("./lib/environment"),
+    TargetOptions: require("./lib/targetOptions"),
+    Dist: require("./lib/dist"),
+    CMake: require("./lib/cMake"),
+    downloader: require("./lib/downloader"),
+    Toolset: require("./lib/toolset"),
+    processHelpers: require("./lib/processHelpers"),
+    locateNAN: require("./lib/locateNAN")
+};

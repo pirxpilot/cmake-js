@@ -1,6 +1,6 @@
 "use strict";
 let assert = require("assert");
-let lib = require("../../");
+let lib = require("..");
 let BuildSystem = lib.BuildSystem;
 let _ = require("lodash");
 let path = require("path");

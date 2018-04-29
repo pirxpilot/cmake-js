@@ -23,7 +23,7 @@
   },
   "bin": "./bin/cmake-js",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 6.0.0"
   },
   "dependencies": {
     "bluebird": "^2.9.15",
@@ -38,22 +38,16 @@
     "semver": "^5.0.3",
     "splitargs": "0",
     "tar": "^3.1.5",
-    "traceur": "0.0.x",
     "unzip": "^0.1.11",
     "url-join": "0",
     "which": "^1.0.9",
     "yargs": "^3.6.0"
   },
   "devDependencies": {
-    "gulp": "*",
-    "gulp-sequence": "*",
-    "gulp-sourcemaps": "*",
-    "gulp-traceur": "*",
     "mocha": "*",
     "nan": "^2.1.0"
   },
   "scripts": {
-    "test": "mocha tests",
-    "compile": "gulp"
+    "test": "mocha tests"
   }
 }

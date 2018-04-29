@@ -2,7 +2,7 @@
 /* global describe,it,before */
 
 let assert = require("assert");
-let lib = require("../../");
+let lib = require("..");
 let CMake = lib.CMake;
 let BuildSystem = lib.BuildSystem;
 let _ = require("lodash");
@@ -21,7 +21,7 @@ describe("BuildSystem", function () {
             log.level = process.env.UT_LOG_LEVEL;
             log.resume();
         }
-        lib.locateNAN.__projectRoot = path.resolve(path.join(__dirname, "../../"));
+        lib.locateNAN.__projectRoot = path.resolve(path.join(__dirname, ".."));
     });
 
     describe("Build with various options", function() {

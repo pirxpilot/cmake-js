@@ -3,7 +3,7 @@
 
 let Bluebird = require("bluebird");
 let fs = Bluebird.promisifyAll(require("fs-extra"));
-let Dist = require("../../").Dist;
+let Dist = require("..").Dist;
 let assert = require("assert");
 let async = Bluebird.coroutine;
 

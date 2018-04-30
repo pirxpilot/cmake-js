@@ -1,11 +1,10 @@
 "use strict";
 /* global describe,it */
 
-let Bluebird = require("bluebird");
 let fs = require("fs-extra");
 let Dist = require("..").Dist;
 let assert = require("assert");
-let async = Bluebird.coroutine;
+let async = require("co").wrap;
 
 let testDownload = process.env.TEST_DOWNLOAD === "1";
 

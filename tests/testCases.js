@@ -4,8 +4,7 @@ let lib = require("..");
 let BuildSystem = lib.BuildSystem;
 let _ = require("lodash");
 let path = require("path");
-let Bluebird = require("bluebird");
-let async = Bluebird.coroutine;
+let async = require("co").wrap;
 let fs = require("fs-extra");
 
 let testCases = {

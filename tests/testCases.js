@@ -43,7 +43,7 @@ let testCases = {
         options = _.extend({
             directory: path.resolve(path.join(__dirname, "./prototype")),
             cMakeOptions: {
-              foo: "bar"
+                foo: "bar"
             }
         }, options);
         let buildSystem = new BuildSystem(options);

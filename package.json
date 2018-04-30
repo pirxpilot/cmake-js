@@ -44,11 +44,13 @@
     "yargs": "^11.0.0"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
     "mocha": "*",
     "nan": "^2.1.0"
   },
   "scripts": {
-    "test": "mocha tests"
+    "test": "mocha tests",
+    "lint": "eslint index.js bin lib tests"
   },
   "files": [
     "index.js",

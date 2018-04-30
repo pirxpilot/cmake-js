@@ -2,8 +2,6 @@
 
 let lib = require("..");
 let environment = lib.environment;
-let Bluebird = require("bluebird");
-let async = Bluebird.coroutine;
 let _ = require("lodash");
 let log = require("npmlog");
 let util = require("util");
@@ -101,16 +99,25 @@ function* generateOptions() {
     }
 }
 
+
+function it_testCase(testCase, options) {
+    let optionsStr = util.inspect(options, { breakLength: Infinity });
+    it("should build with: " + optionsStr, function() {
+        log.info("TEST", "Running case for options of: " + optionsStr);
+        return testCase(options);
+    });
+}
+
 let testRunner = {
     runCase: function (testCase, options) {
+        beforeEach(function() {
+            this.cwd = process.cwd();
+        });
+        afterEach(function() {
+            process.chdir(this.cwd);
+        });
         for (let testOptions of generateOptions()) {
-            let currentOptions = _.extend({}, testOptions, options || {});
-            it("should build with: " + util.inspect(currentOptions), function (done) {
-                async(function*() {
-                    log.info("TEST", "Running case for options of: " + util.inspect(currentOptions));
-                    yield testCase(currentOptions);
-                })().nodeify(done);
-            });
+            it_testCase(testCase, _.extend({}, testOptions, options || {}));
         }
     }
 };

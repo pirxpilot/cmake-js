@@ -6,7 +6,6 @@ let lib = require("..");
 let CMake = lib.CMake;
 let _ = require("lodash");
 let path = require("path");
-let async = require("co").wrap;
 let log = require("npmlog");
 let testRunner = require("./testRunner");
 let testCases = require("./testCases");
@@ -27,12 +26,10 @@ describe("BuildSystem", function () {
     });
 
     it("should provide list of generators", function () {
-        return async(function*() {
-            let gens = yield CMake.getGenerators();
-            assert(_.isArray(gens));
-            assert(gens.length > 0);
-            assert.equal(gens.filter(function (g) { return g.length; }).length, gens.length);
-        })();
+        let gens = CMake.getGenerators();
+        assert(_.isArray(gens));
+        assert(gens.length > 0);
+        assert.equal(gens.filter(function (g) { return g.length; }).length, gens.length);
     });
 
     it("should rebuild prototype if cwd is the source directory", function () {

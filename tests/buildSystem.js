@@ -26,24 +26,24 @@ describe("BuildSystem", function () {
         testRunner.runCase(testCases.buildPrototypeWithDirectoryOption);
     });
 
-    it("should provide list of generators", function (done) {
-        async(function*() {
+    it("should provide list of generators", function () {
+        return async(function*() {
             let gens = yield CMake.getGenerators();
             assert(_.isArray(gens));
             assert(gens.length > 0);
             assert.equal(gens.filter(function (g) { return g.length; }).length, gens.length);
-        })().nodeify(done);
+        })();
     });
 
-    it("should rebuild prototype if cwd is the source directory", function (done) {
-        testCases.buildPrototype2WithCWD().nodeify(done);
+    it("should rebuild prototype if cwd is the source directory", function () {
+        return testCases.buildPrototype2WithCWD();
     });
 
-    it("should run with old GNU compilers", function (done) {
-        testCases.shouldConfigurePreC11Properly().nodeify(done);
+    it("should run with old GNU compilers", function () {
+        return testCases.shouldConfigurePreC11Properly();
     });
 
-    it("should configure with custom option", function (done) {
-        testCases.configureWithCustomOptions().nodeify(done);
+    it("should configure with custom option", function () {
+        return testCases.configureWithCustomOptions();
     });
 });

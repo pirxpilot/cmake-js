@@ -104,11 +104,11 @@ let testRunner = {
     runCase: function (testCase, options) {
         for (let testOptions of generateOptions()) {
             let currentOptions = _.extend({}, testOptions, options || {});
-            it("should build with: " + util.inspect(currentOptions), function (done) {
-                async(function*() {
+            it("should build with: " + util.inspect(currentOptions), function () {
+                return async(function*() {
                     log.info("TEST", "Running case for options of: " + util.inspect(currentOptions));
                     yield testCase(currentOptions);
-                })().nodeify(done);
+                })();
             });
         }
     }

@@ -15,7 +15,7 @@ describe("dist", function () {
         async(function*() {
             let dist = new Dist();
             if (testDownload) {
-                yield fs.remove(dist.internalPath);
+                fs.removeSync(dist.internalPath);
                 assert(dist.downloaded === false);
                 yield dist.ensureDownloaded();
                 assert(dist.downloaded);

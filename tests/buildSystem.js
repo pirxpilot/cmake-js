@@ -1,5 +1,5 @@
 "use strict";
-/* global describe,it,before */
+/* global describe,it,before,after */
 
 let assert = require("assert");
 let lib = require("..");
@@ -19,6 +19,10 @@ describe("BuildSystem", function () {
             log.resume();
         }
         lib.locateNAN.__projectRoot = path.resolve(path.join(__dirname, ".."));
+    });
+
+    after(function() {
+        lib.locateNAN.__projectRoot = undefined;
     });
 
     describe("Build with various options", function() {

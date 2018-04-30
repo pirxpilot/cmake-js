@@ -32,7 +32,7 @@
     "is-iojs": "^1.0.1",
     "lodash": "^3.6.0",
     "memory-stream": "0",
-    "npmlog": "^1.2.0",
+    "npmlog": "^4.1.2",
     "rc": "^1.2.7",
     "request": "^2.54.0",
     "semver": "^5.0.3",

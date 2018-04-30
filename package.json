@@ -1,5 +1,5 @@
 {
-  "name": "cmake-js",
+  "name": "@pirxpilot/cmake-js",
   "description": "CMake.js - a Node.js/io.js native addon build tool",
   "license": "MIT",
   "keywords": [
@@ -19,7 +19,7 @@
   "author": "Gábor Mező aka unbornchikken",
   "repository": {
     "type": "git",
-    "url": "git://github.com/unbornchikken/cmake-js.git"
+    "url": "git://github.com/pirxpilot/cmake-js.git"
   },
   "bin": "./bin/cmake-js",
   "engines": {

@@ -26,7 +26,6 @@
     "node": ">= 6.0.0"
   },
   "dependencies": {
-    "bluebird": "^2.9.15",
     "debug": "^2.1.3",
     "fs-extra": "^5.0.0",
     "hyperdirect": "^0.0.0",
@@ -50,7 +49,7 @@
     "nan": "^2.1.0"
   },
   "scripts": {
-    "test": "mocha tests",
+    "test": "mocha --slow 4000 tests",
     "lint": "eslint index.js bin lib tests"
   },
   "files": [

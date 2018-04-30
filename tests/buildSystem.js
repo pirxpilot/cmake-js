@@ -5,14 +5,12 @@ let lib = require("..");
 let CMake = lib.CMake;
 let _ = require("lodash");
 let path = require("path");
-let Bluebird = require("bluebird");
-let async = Bluebird.coroutine;
 let log = require("npmlog");
 let testRunner = require("./testRunner");
 let testCases = require("./testCases");
 
 describe("BuildSystem", function () {
-    this.timeout(300000);
+    this.timeout(0);
 
     before(function() {
         if (process.env.UT_LOG_LEVEL) {
@@ -30,24 +28,22 @@ describe("BuildSystem", function () {
         testRunner.runCase(testCases.buildPrototypeWithDirectoryOption);
     });
 
-    it("should provide list of generators", function (done) {
-        async(function*() {
-            let gens = yield CMake.getGenerators();
-            assert(_.isArray(gens));
-            assert(gens.length > 0);
-            assert.equal(gens.filter(function (g) { return g.length; }).length, gens.length);
-        })().nodeify(done);
+    it("should provide list of generators", function () {
+        let gens = CMake.getGenerators();
+        assert(_.isArray(gens));
+        assert(gens.length > 0);
+        assert.equal(gens.filter(function (g) { return g.length; }).length, gens.length);
     });
 
-    it("should rebuild prototype if cwd is the source directory", function (done) {
-        testCases.buildPrototype2WithCWD().nodeify(done);
+    it("should rebuild prototype if cwd is the source directory", function () {
+        return testCases.buildPrototype2WithCWD({ noLog: true });
     });
 
-    it("should run with old GNU compilers", function (done) {
-        testCases.shouldConfigurePreC11Properly().nodeify(done);
+    it("should run with old GNU compilers", function () {
+        return testCases.shouldConfigurePreC11Properly({ noLog: true });
     });
 
-    it("should configure with custom option", function (done) {
-        testCases.configureWithCustomOptions().nodeify(done);
+    it("should configure with custom option", function () {
+        return testCases.configureWithCustomOptions({ noLog: true });
     });
 });

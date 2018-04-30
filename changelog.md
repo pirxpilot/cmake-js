@@ -1,3 +1,18 @@
+
+4.0.1 / 2018-04-30
+==================
+
+ * rename to @pirxpilot/cmake-js
+ * fix: skip scope directories when looking for NAN
+ * use sync versions od exec, spawn, and fs functions
+ * add lint task implemented with eslint
+ * replace bluebird with co
+ * replace request with hyperquest
+ * replace unzip with unzipper
+ * replace npmconf with rc
+ * upgrade yargs, lodash, tar, npmlog, url-join
+ * remove es5 compiled sources and traceur
+
 v3.6.2 - 17/02/18
 =================
 

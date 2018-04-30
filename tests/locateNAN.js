@@ -1,5 +1,4 @@
 "use strict";
-/* global describe,it */
 
 let locateNAN = require("..").locateNAN;
 let path = require("path");

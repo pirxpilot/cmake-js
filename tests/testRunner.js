@@ -1,5 +1,5 @@
 "use strict";
-/* global it */
+
 let lib = require("..");
 let environment = lib.environment;
 let Bluebird = require("bluebird");

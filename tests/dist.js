@@ -1,5 +1,4 @@
 "use strict";
-/* global describe,it */
 
 let Bluebird = require("bluebird");
 let fs = require("fs-extra");

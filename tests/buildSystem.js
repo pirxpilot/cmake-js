@@ -1,5 +1,4 @@
 "use strict";
-/* global describe,it,before */
 
 let assert = require("assert");
 let lib = require("..");

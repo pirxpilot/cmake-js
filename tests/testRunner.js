@@ -37,14 +37,14 @@ function* generateRuntimeOptions() {
     function* generateForNWJS(arch) {
         yield {
             runtime: "nw",
-            runtimeVersion: "0.12.3",
+            runtimeVersion: "0.13.2",
             arch: arch
         };
 
         // Latest:
         yield {
             runtime: "nw",
-            runtimeVersion: "0.13.2",
+            runtimeVersion: "0.30.5",
             arch: arch
         };
     }

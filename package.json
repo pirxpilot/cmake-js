@@ -15,7 +15,7 @@
     "electron",
     "boost"
   ],
-  "version": "3.7.3",
+  "version": "4.0.2",
   "author": "Gábor Mező aka unbornchikken",
   "repository": {
     "type": "git",

@@ -1,3 +1,17 @@
+
+4.0.2 / 2018-05-20
+==================
+
+ * remove generators and switch to sync where possible
+ * replace request with hyperquest
+ * add lint task implemented with eslint
+ * upgrade yargs, lodash, tar, npmlog, url-join
+ * replace .npmignore with package.files
+ * add Travis CI configuration
+ * flatten directory structure
+ * remove es5 compiled sources and traceur
+ * rename to @pirxpilot/cmake-js
+
 v3.7.3 - 16/05/18
 =================
 

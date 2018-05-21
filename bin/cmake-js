@@ -10,9 +10,7 @@ var version = require("../package").version;
 var logLevels = ["silly", "verbose", "info", "http", "warn", "error"];
 var yargs = require("yargs")
     .usage("CMake.js " + version + "\n\nUsage: $0 [<command>] [options]")
-    .version(function () {
-        return version;
-    })
+    .version(version)
     .command("install", "Install Node.js/io.js distribution files if needed")
     .command("configure", "Configure CMake project")
     .command("print-configure", "Print the configuration command")
@@ -76,6 +74,12 @@ var yargs = require("yargs")
             alias: "generator",
             demand: false,
             describe: "use specified generator",
+            type: "string"
+        },
+        t: {
+            alias: "toolset",
+            demand: false,
+            describe: "use specified toolset",
             type: "string"
         },
         T: {
@@ -170,6 +174,7 @@ var options = {
     debug: argv.debug,
     cmakePath: argv.c || null,
     generator: argv.G,
+    toolset: argv.t,
     target: argv.T,
     preferMake: argv.m,
     preferXcode: argv.x,
@@ -257,6 +262,7 @@ done = done || ifCommand("print-clean", printClean);
 done = done || ifCommand("reconfigure", reconfigure);
 done = done || ifCommand("rebuild", rebuild);
 done = done || ifCommand("compile", compile);
+
 if (!done) {
     if (command) {
         log.error("COM", "Unknown command: " + command);

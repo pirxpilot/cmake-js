@@ -1,5 +1,9 @@
 # CMake.js (MIT)
 
+## Quick note to contributors
+
+First of all, thanks for the PRs! Keep'em comming! I try to verify and release stuff as fast as I can. So, you should not bother to compile and include ES5 files along with ur PRs, generating them is the part of the release process.
+
 ## About
 CMake.js is a Node.js/io.js native addon build tool which works *exactly* like [node-gyp](https://github.com/TooTallNate/node-gyp), but instead of [gyp](http://en.wikipedia.org/wiki/GYP_%28software%29), it is based on [CMake](http://cmake.org) build system. It's compatible with the following runtimes:
 
@@ -127,6 +131,7 @@ Options:
   -g, --prefer-gnu       use GNU compiler instead of default CMake compiler, if
                          available (Posix)                             [boolean]
   -G, --generator        use specified generator                        [string]
+  -t, --toolset          use specified toolset                          [string]
   -T, --target           only build the specified target                [string]
   -C, --prefer-clang     use Clang compiler instead of default CMake compiler,
                          if available (Posix)                          [boolean]
@@ -424,3 +429,5 @@ View [changelog.md](changelog.md)
 - [Gerhard Berger](https://github.com/gerhardberger) - Custom CMake parameter support, silent and out parameters
 - [d3x0r](https://github.com/d3x0r) - "G" option for supporting cutom generators, various fixes
 - [AlessandroA](https://github.com/AlessandroA) - "T" option for building a specified target
+- [pirxpilot](https://github.com/pirxpilot) - various dependency upgrades
+- [VictorLeach96](https://github.com/VictorLeach96) - tolset commandlien option

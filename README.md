@@ -395,16 +395,8 @@ you need at the moment to make your package depend on it with
 
     npm install --save-dev node-addon-api
 
-and add it to the include directories of your *CMake* project file
-`CMakeLists.txt`:
-
-```cmake
-
-# Include N-API wrappers
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/node_modules/node-addon-api")
-
-```
-
+`cmake-js` will automatically add path to `napi.h` header to your project
+includes.
 
 ## Tutorials
 

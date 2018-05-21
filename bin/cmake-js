@@ -2,157 +2,58 @@
 "use strict";
 
 var log = require("npmlog");
-var _ = require("lodash");
-var BuildSystem = require("../").BuildSystem;
 var util = require("util");
+var fs = require("fs");
+var path = require("path");
 
 var version = require("../package").version;
 var logLevels = ["silly", "verbose", "info", "http", "warn", "error"];
-var yargs = require("yargs")
-    .usage("CMake.js " + version + "\n\nUsage: $0 [<command>] [options]")
-    .version(version)
-    .command("install", "Install Node.js/io.js distribution files if needed")
-    .command("configure", "Configure CMake project")
-    .command("print-configure", "Print the configuration command")
-    .command("build", "Build the project (will configure first if required)")
-    .command("print-build", "Print the build command")
-    .command("clean", "Clean the project directory")
-    .command("print-clean", "Print the clean command")
-    .command("reconfigure", "Clean the project directory then configure the project")
-    .command("rebuild", "Clean the project directory then build the project")
-    .command("compile", "Build the project, and if build fails, try a full rebuild")
-    .options({
-        h: {
-            alias: "help",
-            demand: false,
-            describe: "show this screen",
-            type: "boolean"
-        },
-        l: {
-            alias: "log-level",
-            demand: false,
-            describe: "set log level (" + logLevels.join(", ") + "), default is info",
-            type: "string"
-        },
-        d: {
-            alias: "directory",
-            demand: false,
-            describe: "specify CMake project's directory (where CMakeLists.txt located)",
-            type: "string"
-        },
-        D: {
-            alias: "debug",
-            demand: false,
-            describe: "build debug configuration",
-            type: "boolean"
-        },
-        c: {
-            alias: "cmake-path",
-            demand: false,
-            describe: "path of CMake executable",
-            type: "string"
-        },
-        m: {
-            alias: "prefer-make",
-            demand: false,
-            describe: "use Unix Makefiles even if Ninja is available (Posix)",
-            type: "boolean"
-        },
-        x: {
-            alias: "prefer-xcode",
-            demand: false,
-            describe: "use Xcode instead of Unix Makefiles",
-            type: "boolean"
-        },
-        g: {
-            alias: "prefer-gnu",
-            demand: false,
-            describe: "use GNU compiler instead of default CMake compiler, if available (Posix)",
-            type: "boolean"
-        },
-        G: {
-            alias: "generator",
-            demand: false,
-            describe: "use specified generator",
-            type: "string"
-        },
-        t: {
-            alias: "toolset",
-            demand: false,
-            describe: "use specified toolset",
-            type: "string"
-        },
-        T: {
-            alias: "target",
-            demand: false,
-            describe: "only build the specified target",
-            type: "string"
-        },
-        C: {
-            alias: "prefer-clang",
-            demand: false,
-            describe: "use Clang compiler instead of default CMake compiler, if available (Posix)",
-            type: "boolean"
-        },
-        s: {
-            alias: "std",
-            demand: false,
-            describe: "C++ standard, eg.: c++98, c++11, c++14, etc., default is c++11 (Posix)",
-            type: "string"
-        },
-        r: {
-            alias: "runtime",
-            demand: false,
-            describe: "the runtime to use",
-            type: "string"
-        },
-        v: {
-            alias: "runtime-version",
-            demand: false,
-            describe: "the runtime version to use",
-            type: "string"
-        },
-        a: {
-            alias: "arch",
-            demand: false,
-            describe: "the architecture to build in",
-            type: "string"
-        },
-        o: {
-            alias: "prec11",
-            demand: false,
-            describe: "use C++98 standard (obsolete: use -s=c++98 instead)",
-            type: "boolean"
-        },
-        "CD": {
-            demand: false,
-            describe: "Custom argument passed to CMake in format: -D<your-arg-here>",
-            type: "string"
-        },
-        i: {
-            alias: "silent",
-            describe: "Prevents CMake.js to print to the stdio",
-            type: "boolean"
-        },
-        O: {
-          alias: "out",
-          describe: "Specify the output directory to compile to, default is projectRoot/build",
-          type: "string"
-        }
-    });
-var argv = yargs.argv;
+
+var argv = require('minimist')(process.argv.slice(2), {
+    boolean: [ "h", "D", "m", "x", "g", "C", "o", "i" ],
+    string: [ "l", "d", "c", "G", "t", "T", "s", "r", "v", "a", "O", "CD" ],
+    alias: {
+        h: "help",
+        l: [ "log-level", "logLevel" ],
+        d: "directory",
+        D: "debug",
+        c: [ "cmake-path", "cmakePath" ],
+        m: [ "prefer-make", "preferMake" ],
+        x: [ "prefer-xcode", "preferXcode" ],
+        g: [ "prefer-gnu", "preferGnu" ],
+        G: "generator",
+        t: "toolset",
+        T: "target",
+        C: [ "prefer-clang", "preferClang" ],
+        s: "std",
+        r: "runtime",
+        v: [ "runtime-version", "runtimeVersion" ],
+        a: "arch",
+        o: "prec11",
+        i: "silent",
+        O: "out"
+    },
+    '--': true
+});
 
 // If help, then print and exit:
 
-if (argv.h) {
-    console.info(yargs.help());
-    process.exit(0);
+if (argv.help) {
+    var filename = path.join(__dirname, "..", "doc", "help.txt");
+    console.info('cmake-js', version);
+    fs.createReadStream(filename).pipe(process.stdout);
+    return;
+}
+
+if (argv.version) {
+    console.info(version);
+    return;
 }
 
 // Setup log level:
 
-if (argv.l && _.contains(logLevels, argv.l)) {
-    log.level = argv.l;
+if (logLevels.includes(argv.logLevel)) {
+    log.level = argv.logLevel;
     log.resume();
 }
 
@@ -162,113 +63,63 @@ log.silly("CON", util.inspect(argv));
 log.verbose("CON", "Parsing arguments");
 
 // Extract custom cMake options
-var customOptions = {};
-_.keys(argv).forEach(function (key) {
-    if (argv[key] && _.startsWith(key, "CD")) {
-        customOptions[key.substr(2)] = argv[key];
-    }
-});
+var customOptions = Object.keys(argv)
+    .filter(function(key) { return key.startsWith("CD"); })
+    .reduce(function(co, key) {
+        co[key.slice(2)] = argv[key];
+        return co;
+    }, {});
 
 var options = {
     directory: argv.directory || null,
     debug: argv.debug,
-    cmakePath: argv.c || null,
-    generator: argv.G,
-    toolset: argv.t,
-    target: argv.T,
-    preferMake: argv.m,
-    preferXcode: argv.x,
-    preferGnu: argv.g,
-    preferClang: argv.C,
+    cmakePath: argv.cmakePath || null,
+    generator: argv.generator,
+    toolset: argv.toolset,
+    target: argv.target,
+    preferMake: argv.preferMake,
+    preferXcode: argv.preferXcode,
+    preferGnu: argv.preferGnu,
+    preferClang: argv.preferClang,
     std: argv.s || (argv.o ? "c++98" : null),
-    runtime: argv.r,
-    runtimeVersion: argv.v,
-    arch: argv.a,
+    runtime: argv.runtime,
+    runtimeVersion: argv.runtimeVersion,
+    arch: argv.arch,
     cMakeOptions: customOptions,
-    silent: argv.i,
-    out: argv.O
+    silent: argv.silent,
+    out: argv.out
 };
 
 log.verbose("CON", "options:");
 log.verbose("CON", util.inspect(options));
 
-var command = _.first(argv._) || "build";
-
-log.verbose("CON", "Running command: " + command);
-
-var buildSystem = new BuildSystem(options);
-
-function ifCommand(c, f) {
-    if (c === command) {
-        f();
-        return true;
+function run(command) {
+    function print(out) {
+        console.info(out);
     }
-    return false;
-}
 
-function exitOnError(promise) {
-    promise.catch(function () {
-        process.exit(1);
-    });
-}
+    log.verbose("CON", "Running command: " + command);
 
-function install() {
-    exitOnError(buildSystem.install());
-}
-function configure() {
-    exitOnError(buildSystem.configure());
-}
-function printConfigure() {
-    exitOnError(buildSystem.getConfigureCommand()
-        .then(function (command) {
-            console.info(command);
-        }));
-}
-function build() {
-    exitOnError(buildSystem.build());
-}
-function printBuild() {
-    exitOnError(buildSystem.getBuildCommand()
-        .then(function (command) {
-            console.info(command);
-        }));
-}
-function clean() {
-    exitOnError(buildSystem.clean());
-}
-function printClean() {
-    exitOnError(buildSystem.getCleanCommand()
-        .then(function (command) {
-            console.info(command);
-        }));
-}
-function reconfigure() {
-    exitOnError(buildSystem.reconfigure());
-}
-function rebuild() {
-    exitOnError(buildSystem.rebuild());
-}
-function compile() {
-    exitOnError(buildSystem.compile());
-}
+    var BuildSystem = require("../").BuildSystem;
+    var bs = new BuildSystem(options);
 
-var done = ifCommand("install", install);
-done = done || ifCommand("configure", configure);
-done = done || ifCommand("print-configure", printConfigure);
-done = done || ifCommand("build", build);
-done = done || ifCommand("print-build", printBuild);
-done = done || ifCommand("clean", clean);
-done = done || ifCommand("print-clean", printClean);
-done = done || ifCommand("reconfigure", reconfigure);
-done = done || ifCommand("rebuild", rebuild);
-done = done || ifCommand("compile", compile);
-
-if (!done) {
-    if (command) {
+    switch(command) {
+    case "install":         return bs.install();
+    case "configure":       return bs.configure();
+    case "print-configure": return bs.getConfigureCommand().then(print);
+    case "build":           return bs.build();
+    case "print-build":     return bs.getBuildCommand().then(print);
+    case "clean":           return bs.clean();
+    case "print-clean":     return bs.getCleanCommand().then(print);
+    case "reconfigure":     return bs.reconfigure();
+    case "rebuild":         return bs.rebuild();
+    case "compile":         return bs.compile();
+    default:
         log.error("COM", "Unknown command: " + command);
-        process.exit(1);
-    }
-    else {
-        build();
+        return Promise.reject();
     }
 }
+
+run(argv._[0] || "build").catch(function () {
+    process.exit(1);
+});

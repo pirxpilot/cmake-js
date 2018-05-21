@@ -4,7 +4,6 @@ let lib = require("..");
 let environment = lib.environment;
 let _ = require("lodash");
 let log = require("npmlog");
-let util = require("util");
 
 function* generateRuntimeOptions() {
     function* generateForNode(arch) {
@@ -82,13 +81,13 @@ function* generateOptions() {
         }
         else {
             // Clang, Make
-            yield _.extend({}, runtimeOptions, {preferClang: true, referMake: true});
+            yield _.extend({}, runtimeOptions, {preferClang: true, preferMake: true});
 
             // Clang, Ninja
             yield _.extend({}, runtimeOptions, {preferClang: true});
 
             // g++, Make
-            yield _.extend({}, runtimeOptions, {preferGnu: true, referMake: true});
+            yield _.extend({}, runtimeOptions, {preferGnu: true, preferMake: true});
 
             // g++, Ninja
             yield _.extend({}, runtimeOptions, {preferGnu: true});
@@ -101,9 +100,20 @@ function* generateOptions() {
 
 
 function it_testCase(testCase, options) {
-    let optionsStr = util.inspect(options, { breakLength: Infinity });
+    let optionsStr = [
+        options.runtime,
+        options.runtimeVersion,
+        options.arch
+    ];
+    [
+        "preferGnu",
+        "preferClang",
+        "preferMake"
+    ].forEach(o => (o in options) && optionsStr.push(o));
+    optionsStr = optionsStr.filter(x => x).join(" ");
     it("should build with: " + optionsStr, function() {
         log.info("TEST", "Running case for options of: " + optionsStr);
+        options.silent = true;
         return testCase(options);
     });
 }
@@ -117,7 +127,7 @@ let testRunner = {
             process.chdir(this.cwd);
         });
         for (let testOptions of generateOptions()) {
-            it_testCase(testCase, _.extend({}, testOptions, options || {}));
+            it_testCase(testCase, _.extend({}, testOptions, options));
         }
     }
 };

@@ -36,14 +36,14 @@ describe("BuildSystem", function () {
     });
 
     it("should rebuild prototype if cwd is the source directory", function () {
-        return testCases.buildPrototype2WithCWD({ noLog: true });
+        return testCases.buildPrototype2WithCWD({ silent: true });
     });
 
     it("should run with old GNU compilers", function () {
-        return testCases.shouldConfigurePreC11Properly({ noLog: true });
+        return testCases.shouldConfigurePreC11Properly();
     });
 
     it("should configure with custom option", function () {
-        return testCases.configureWithCustomOptions({ noLog: true });
+        return testCases.configureWithCustomOptions();
     });
 });

@@ -1,10 +1,8 @@
 "use strict";
 
 let assert = require("assert");
-let lib = require("..");
-let CMake = lib.CMake;
+let CMake = require("..").CMake;
 let _ = require("lodash");
-let path = require("path");
 let log = require("npmlog");
 let testRunner = require("./testRunner");
 let testCases = require("./testCases");
@@ -17,11 +15,6 @@ describe("BuildSystem", function () {
             log.level = process.env.UT_LOG_LEVEL;
             log.resume();
         }
-        lib.locateNAN.__projectRoot = path.resolve(path.join(__dirname, ".."));
-    });
-
-    after(function() {
-        lib.locateNAN.__projectRoot = undefined;
     });
 
     describe("Build with various options", function() {

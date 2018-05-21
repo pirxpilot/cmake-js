@@ -1,4 +1,10 @@
 
+4.1.1 / 2018-05-21
+==================
+
+ * clean up test output
+ * simplify CLI args parsing
+
 4.1.0 / 2018-05-20
 ==================
 

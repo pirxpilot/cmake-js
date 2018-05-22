@@ -1,3 +1,34 @@
+
+4.1.2 / 2018-05-22
+==================
+
+ * adjust N-API documentation
+ * remove unused download .zip functionality
+
+4.1.1 / 2018-05-21
+==================
+
+ * clean up test output
+ * simplify CLI args parsing
+
+4.1.0 / 2018-05-20
+==================
+
+ * add support for locating napi.h header
+
+4.0.2 / 2018-05-20
+==================
+
+ * remove generators and switch to sync where possible
+ * replace request with hyperquest
+ * add lint task implemented with eslint
+ * upgrade yargs, lodash, tar, npmlog, url-join
+ * replace .npmignore with package.files
+ * add Travis CI configuration
+ * flatten directory structure
+ * remove es5 compiled sources and traceur
+ * rename to @pirxpilot/cmake-js
+
 v3.7.3 - 16/05/18
 =================
 

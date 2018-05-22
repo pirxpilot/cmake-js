@@ -39,7 +39,6 @@
     "semver": "^5.0.3",
     "splitargs": "0",
     "tar": "^4.4.1",
-    "unzipper": "^0.8.13",
     "url-join": "^4.0.0",
     "which": "^1.0.9"
   },

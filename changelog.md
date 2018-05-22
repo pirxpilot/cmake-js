@@ -1,3 +1,26 @@
+v3.7.3 - 16/05/18
+=================
+
+- npm config hotfix https://github.com/cmake-js/cmake-js/pull/123
+
+v3.7.2 - 16/05/18
+=================
+
+- do not use, breaks ES5 compatibility
+
+v3.7.1 - 07/05/18
+=================
+
+- Linux line ending hotfix (wat)
+
+v3.7.0 - 07/05/18
+=================
+
+- PR: replace unzip with unzipper https://github.com/cmake-js/cmake-js/pull/120
+- PR: replace npmconf with rc https://github.com/cmake-js/cmake-js/pull/119
+- PR: update to modern fs-extras https://github.com/cmake-js/cmake-js/pull/118
+- PR: Adds toolset command line flag https://github.com/cmake-js/cmake-js/pull/115
+
 v3.6.2 - 17/02/18
 =================
 

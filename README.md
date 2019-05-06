@@ -294,6 +294,7 @@ Available settings:
 
 - **runtime**: application's target runtime, possible values are:
 	- `node`: Node.js
+    - `napi`: Node.js using [N-API]
 	- `nw`: nw.js
 	- `electron`: Electron
 - **runtimeVersion**: version of the application's target runtime, for example: `0.12.1`
@@ -306,6 +307,7 @@ The actual node runtime parameters are detectable in CMakeLists.txt files, the f
 - **NODE_RUNTIME**: `"node"`, `"nw"`, `"electron"`
 - **NODE_RUNTIMEVERSION**: for example: `"0.12.1"`
 - **NODE_ARCH**: `"x64"`, `"ia32"`, `"arm"`
+- **NAPI_VERSION**: is set when `napi` runtime is used
 
 #### NW.js
 
@@ -375,14 +377,9 @@ build environment.
 
 #### N-API and `node-addon-api`
 
-[ABI-stable Node.js API
-(N-API)](https://nodejs.org/api/n-api.html) are a set of experimental C
+[ABI-stable Node.js API(N-API)][N-API] are a set of C
 APIs that allow to compile a native module and have it loaded by
-different versions of Node.js that provide the N-API. At the moment,
-only Node.js v8.0.0 implements and exports N-API symbols under the flag
-`--napi-modules`:
-
-    node --napi-modules index.js
+different versions of Node.js that provide the N-API. 
 
 To compile a native module that uses only the
 [plain `C` N-API calls](https://github.com/nodejs/node/blob/v8.x/src/node_api.h),
@@ -397,6 +394,19 @@ you need at the moment to make your package depend on it with
 
 `cmake-js` will automatically add path to `napi.h` header to your project
 includes.
+
+Add:
+
+    add_definitions(-DNAPI_VERSION=${NAPI_VERSION})
+
+to you CMakeLists.txt to pass `NAPI_VERSION` to compiler.
+
+This define insures that the C preprocessor value NAPI_VERSION is
+communicated to the module's C/C++ code. The N-API header files
+supplied with Node use this value to configure the build for this
+specific N-API version. In addition, the module's C/C++ code can use
+this value to conditionally compile code based on the N-API version it
+is being compiled against.
 
 ## Tutorials
 
@@ -423,3 +433,6 @@ View [changelog.md](changelog.md)
 - [AlessandroA](https://github.com/AlessandroA) - "T" option for building a specified target
 - [pirxpilot](https://github.com/pirxpilot) - various dependency upgrades
 - [VictorLeach96](https://github.com/VictorLeach96) - tolset commandlien option
+
+
+[N-API]: https://nodejs.org/api/n-api.html

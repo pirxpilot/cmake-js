@@ -1,35 +1,38 @@
-"use strict";
-let assert = require("assert");
-let lib = require("..");
-let BuildSystem = lib.BuildSystem;
-let _ = require("lodash");
-let path = require("path");
-let fs = require("fs");
+const assert = require("assert");
+const { BuildSystem } = require("..");
+const { join, resolve } = require("path");
+const { statSync } = require("fs");
 
-let testCases = {
-    buildPrototypeWithDirectoryOption: function(options) {
-        options = _.extend({
+module.exports = {
+    buildPrototypeWithDirectoryOption(options = {}) {
+        const buildSystem = new BuildSystem({
             noLog: true,
-            directory: path.resolve(path.join(__dirname, "./prototype"))
-        }, options);
-        let buildSystem = new BuildSystem(options);
+            directory: resolve(join(__dirname, "./prototype")),
+            runtime: 'node',
+            runtimeVersion: '10.15.3',
+            ...options
+        });
         return buildSystem.rebuild().then(function() {
-            assert.ok(fs.statSync(path.join(__dirname, "prototype/build/Release/addon.node")).isFile());
+            assert.ok(statSync(join(__dirname, "prototype/build/Release/addon.node")).isFile());
         });
     },
-    buildPrototype2WithCWD: function(options) {
-        process.chdir(path.resolve(path.join(__dirname, "./prototype2")));
-        let buildSystem = new BuildSystem(options);
+    buildPrototype2WithCWD(options = {}) {
+        process.chdir(resolve(join(__dirname, "./prototype2")));
+        let buildSystem = new BuildSystem({
+            runtime: 'node',
+            runtimeVersion: '10.15.3',
+            ...options
+        });
         return buildSystem.rebuild().then(function() {
-            assert.ok(fs.statSync(path.join(__dirname, "prototype2/build/Release/addon2.node")).isFile());
+            assert.ok(statSync(join(__dirname, "prototype2/build/Release/addon2.node")).isFile());
         });
     },
-    shouldConfigurePreC11Properly: function(options) {
-        options = _.extend({
-            directory: path.resolve(path.join(__dirname, "./prototype")),
-            std: "c++98"
-        }, options);
-        let buildSystem = new BuildSystem(options);
+    shouldConfigurePreC11Properly(options = {}) {
+        let buildSystem = new BuildSystem({
+            directory: resolve(join(__dirname, "./prototype")),
+            std: "c++98",
+            ...options
+        });
         if (!/visual studio/i.test(buildSystem.toolset.generator)) {
 
             buildSystem.getConfigureCommand().then(function(command) {
@@ -37,19 +40,15 @@ let testCases = {
             });
         }
     },
-    configureWithCustomOptions: function(options) {
-        options = _.extend({
-            directory: path.resolve(path.join(__dirname, "./prototype")),
-            cMakeOptions: {
-                foo: "bar"
-            }
-        }, options);
-        let buildSystem = new BuildSystem(options);
+    configureWithCustomOptions(options = {}) {
+        let buildSystem = new BuildSystem({
+            directory: resolve(join(__dirname, "./prototype")),
+            cMakeOptions: { foo: "bar" },
+            ...options
+        });
 
         return buildSystem.getConfigureCommand().then(function(command) {
             assert.notEqual(command.indexOf("-Dfoo=\"bar\""), -1, "custom options added");
         });
     }
 };
-
-module.exports = testCases;

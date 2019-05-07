@@ -1,23 +1,23 @@
-"use strict";
+const rimraf = require("rimraf");
+const { Dist } = require("..");
+const environment = require("../lib/environment");
 
-let fs = require("fs-extra");
-let Dist = require("..").Dist;
-let environment = require("../lib/environment");
+const assert = require("assert");
 
-let assert = require("assert");
-
-let itDownload = process.env.TEST_DOWNLOAD === "1" ? it : it.skip;
 
 function testDownload() {
-    let dist = new Dist({ noLog: true });
+    const dist = new Dist({ noLog: true });
 
-    return fs.remove(dist.internalPath)
-        .then(() => assert(!dist.downloaded, "dist should not be downloaded on init"))
-        .then(() => dist.ensureDownloaded())
+    rimraf.sync(dist.internalPath);
+    assert(!dist.downloaded, "dist should not be downloaded on init");
+
+    return dist.ensureDownloaded()
         .then(() => assert(dist.downloaded, "dist should be downloaded after download"));
 }
 
-describe("dist", function () {
+const describeSkip = process.env.TEST_DOWNLOAD === "1" ? describe : describe.skip;
+
+describeSkip("dist", function () {
     this.timeout(0);
 
     describe("linux", function() {
@@ -29,11 +29,12 @@ describe("dist", function () {
         });
 
         after(function() {
-            Object.assign(environment, this.environment);
+            const { isWin, isLinux } = this.environment;
+            Object.assign(environment, { isWin, isLinux });
         });
 
 
-        itDownload("should download dist files if needed", testDownload);
+        it("should download dist files if needed", testDownload);
 
     });
 
@@ -48,11 +49,12 @@ describe("dist", function () {
         });
 
         after(function() {
-            Object.assign(environment, this.environment);
+            const { isWin, isLinux, runtime, runtimeVersion } = this.environment;
+            Object.assign(environment, { isWin, isLinux, runtime, runtimeVersion });
         });
 
 
-        itDownload("should download dist files if needed", testDownload);
+        it("should download dist files if needed", testDownload);
 
     });
 
@@ -67,11 +69,12 @@ describe("dist", function () {
         });
 
         after(function() {
-            Object.assign(environment, this.environment);
+            const { isWin, isLinux, runtime, runtimeVersion } = this.environment;
+            Object.assign(environment, { isWin, isLinux, runtime, runtimeVersion });
         });
 
 
-        itDownload("should download dist files if needed", testDownload);
+        it("should download dist files if needed", testDownload);
 
     });
 
@@ -84,11 +87,12 @@ describe("dist", function () {
         });
 
         after(function() {
-            Object.assign(environment, this.environment);
+            const { isWin, isLinux } = this.environment;
+            Object.assign(environment, { isWin, isLinux });
         });
 
 
-        itDownload("should download dist files if needed", testDownload);
+        it("should download dist files if needed", testDownload);
 
     });
 });

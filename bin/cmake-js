@@ -1,15 +1,14 @@
 #!/usr/bin/env node
-"use strict";
 
-var log = require("npmlog");
-var util = require("util");
-var fs = require("fs");
-var path = require("path");
+const log = require("npmlog");
+const util = require("util");
+const fs = require("fs");
+const path = require("path");
 
-var version = require("../package").version;
-var logLevels = ["silly", "verbose", "info", "http", "warn", "error"];
+const { version } = require("../package");
+const logLevels = ["silly", "verbose", "info", "http", "warn", "error"];
 
-var argv = require('minimist')(process.argv.slice(2), {
+const argv = require('minimist')(process.argv.slice(2), {
     boolean: [ "h", "D", "m", "x", "g", "C", "o", "i" ],
     string: [ "l", "d", "c", "G", "t", "T", "s", "r", "v", "a", "O", "CD" ],
     alias: {
@@ -63,14 +62,14 @@ log.silly("CON", util.inspect(argv));
 log.verbose("CON", "Parsing arguments");
 
 // Extract custom cMake options
-var customOptions = Object.keys(argv)
-    .filter(function(key) { return key.startsWith("CD"); })
+const customOptions = Object.keys(argv)
+    .filter(key => key.startsWith("CD"))
     .reduce(function(co, key) {
         co[key.slice(2)] = argv[key];
         return co;
     }, {});
 
-var options = {
+const options = {
     directory: argv.directory || null,
     debug: argv.debug,
     cmakePath: argv.cmakePath || null,
@@ -100,8 +99,8 @@ function run(command) {
 
     log.verbose("CON", "Running command: " + command);
 
-    var BuildSystem = require("../").BuildSystem;
-    var bs = new BuildSystem(options);
+    const { BuildSystem } = require("../");
+    const bs = new BuildSystem(options);
 
     switch(command) {
     case "install":         return bs.install();

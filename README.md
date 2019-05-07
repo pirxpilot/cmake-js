@@ -1,3 +1,8 @@
+[![NPM version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Dependency Status][deps-image]][deps-url]
+[![Dev Dependency Status][deps-dev-image]][deps-dev-url]
+
 # CMake.js (MIT)
 
 ## Quick note to contributors
@@ -436,3 +441,16 @@ View [changelog.md](changelog.md)
 
 
 [N-API]: https://nodejs.org/api/n-api.html
+
+[npm-image]: https://img.shields.io/npm/v/@pirxpilot/cmake-js.svg
+[npm-url]: https://npmjs.org/package/@pirxpilot/cmake-js
+
+[travis-url]: https://travis-ci.com/pirxpilot/cmake-js
+[travis-image]: https://img.shields.io/travis/com/pirxpilot/cmake-js/pu.svg
+
+[deps-image]: https://david-dm.org/pirxpilot/cmake-js/pu/dev-status.svg
+[deps-url]: https://david-dm.org/pirxpilot/cmake-js/pu
+
+[deps-dev-image]: https://david-dm.org/pirxpilot/cmake-js/pu/dev-status.svg
+[deps-dev-url]: https://david-dm.org/pirxpilot/cmake-js/pu?type=dev
+

@@ -1,5 +1,3 @@
-"use strict";
-
 module.exports = {
     BuildSystem: require("./lib/buildSystem"),
     CMLog: require("./lib/cmLog"),

@@ -1,9 +1,5 @@
-"use strict";
-
-let lib = require("..");
-let environment = lib.environment;
-let _ = require("lodash");
-let log = require("npmlog");
+const { environment } = require("..");
+const log = require("npmlog");
 
 function* generateRuntimeOptions() {
     function* generateForNode(arch) {
@@ -11,14 +7,14 @@ function* generateRuntimeOptions() {
         yield {
             runtime: "node",
             runtimeVersion: "0.10.36",
-            arch: arch
+            arch
         };
 
         // LTS:
         yield {
             runtime: "node",
             runtimeVersion: "4.4.2",
-            arch: arch
+            arch
         };
 
         // Current:
@@ -26,7 +22,7 @@ function* generateRuntimeOptions() {
             yield {
                 runtime: "node",
                 runtimeVersion: "5.10.0",
-                arch: arch
+                arch
             };
         }
     }
@@ -35,14 +31,14 @@ function* generateRuntimeOptions() {
         yield {
             runtime: "nw",
             runtimeVersion: "0.13.2",
-            arch: arch
+            arch
         };
 
         // Latest:
         yield {
             runtime: "nw",
             runtimeVersion: "0.30.5",
-            arch: arch
+            arch
         };
     }
 
@@ -51,7 +47,7 @@ function* generateRuntimeOptions() {
         yield {
             runtime: "electron",
             runtimeVersion: "0.37.3",
-            arch: arch
+            arch
         };
     }
 
@@ -81,16 +77,16 @@ function* generateOptions() {
         }
         else {
             // Clang, Make
-            yield _.extend({}, runtimeOptions, {preferClang: true, preferMake: true});
+            yield { ...runtimeOptions, preferClang: true, preferMake: true };
 
             // Clang, Ninja
-            yield _.extend({}, runtimeOptions, {preferClang: true});
+            yield { ...runtimeOptions, preferClang: true };
 
             // g++, Make
-            yield _.extend({}, runtimeOptions, {preferGnu: true, preferMake: true});
+            yield { ...runtimeOptions, preferGnu: true, preferMake: true };
 
             // g++, Ninja
-            yield _.extend({}, runtimeOptions, {preferGnu: true});
+            yield { ...runtimeOptions, preferGnu: true };
 
             // Default:
             yield runtimeOptions;
@@ -111,15 +107,15 @@ function it_testCase(testCase, options) {
         "preferMake"
     ].forEach(o => (o in options) && optionsStr.push(o));
     optionsStr = optionsStr.filter(x => x).join(" ");
-    it("should build with: " + optionsStr, function() {
-        log.info("TEST", "Running case for options of: " + optionsStr);
+    it(`should build with: ${optionsStr}`, function() {
+        log.info("TEST", `Running case for options of: ${optionsStr}`);
         options.silent = true;
         return testCase(options);
     });
 }
 
 let testRunner = {
-    runCase: function (testCase, options) {
+    runCase(testCase, options) {
         beforeEach(function() {
             this.cwd = process.cwd();
         });
@@ -127,7 +123,7 @@ let testRunner = {
             process.chdir(this.cwd);
         });
         for (let testOptions of generateOptions()) {
-            it_testCase(testCase, _.extend({}, testOptions, options));
+            it_testCase(testCase, { ...testOptions, ...options });
         }
     }
 };

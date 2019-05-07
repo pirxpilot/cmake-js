@@ -1,8 +1,6 @@
-"use strict";
-
-let locateIncludes = require("..").locateNAN;
-let path = require("path");
-let assert = require("assert");
+const locateIncludes = require("..").locateNAN;
+const path = require("path");
+const assert = require("assert");
 
 /*
 

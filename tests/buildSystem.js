@@ -1,11 +1,8 @@
-"use strict";
-
-let assert = require("assert");
-let CMake = require("..").CMake;
-let _ = require("lodash");
-let log = require("npmlog");
-let testRunner = require("./testRunner");
-let testCases = require("./testCases");
+const assert = require("assert");
+const { CMake } = require("..");
+const log = require("npmlog");
+const testRunner = require("./testRunner");
+const testCases = require("./testCases");
 
 describe("BuildSystem", function () {
     this.timeout(0);
@@ -23,9 +20,9 @@ describe("BuildSystem", function () {
 
     it("should provide list of generators", function () {
         let gens = CMake.getGenerators();
-        assert(_.isArray(gens));
+        assert(Array.isArray(gens));
         assert(gens.length > 0);
-        assert.equal(gens.filter(function (g) { return g.length; }).length, gens.length);
+        assert.equal(gens.filter(g => g.length).length, gens.length);
     });
 
     it("should rebuild prototype if cwd is the source directory", function () {

@@ -1,6 +1,6 @@
 "use strict";
 
-let fs = require("fs-extra");
+let fs = require("fs");
 let Dist = require("..").Dist;
 let environment = require("../lib/environment");
 
@@ -11,7 +11,7 @@ let itDownload = process.env.TEST_DOWNLOAD === "1" ? it : it.skip;
 function testDownload() {
     let dist = new Dist({ noLog: true });
 
-    return fs.remove(dist.internalPath)
+    return fs.promises.rmdir(dist.internalPath)
         .then(() => assert(!dist.downloaded, "dist should not be downloaded on init"))
         .then(() => dist.ensureDownloaded())
         .then(() => assert(dist.downloaded, "dist should be downloaded after download"));

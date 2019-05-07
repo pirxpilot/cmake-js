@@ -4,7 +4,7 @@ let lib = require("..");
 let BuildSystem = lib.BuildSystem;
 let _ = require("lodash");
 let path = require("path");
-let fs = require("fs-extra");
+let fs = require("fs");
 
 let testCases = {
     buildPrototypeWithDirectoryOption: function(options) {

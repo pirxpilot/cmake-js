@@ -35,7 +35,7 @@
     "minimist": "^1.2.0",
     "npmlog": "^4.1.2",
     "rc": "^1.2.7",
-    "semver": "^5.0.3",
+    "semver": "~6",
     "splitargs": "0",
     "tar": "^4.4.1",
     "url-join": "^4.0.0",
